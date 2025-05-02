@@ -1,0 +1,672 @@
+[
+  {
+    "StoreName": "Pizza Roma",
+    "Latitude": 37.9815,
+    "Longitude": 23.7280,
+    "FoodCategory": "pizzeria",
+    "Stars": 4,
+    "NoOfVotes": 125,
+    "StoreLogo": "/logos/pizza_roma.png",
+    "Products": [
+      {
+        "ProductName": "margarita",
+        "ProductType": "pizza",
+        "Available Amount": 500,
+        "Price": 8.5
+      },
+      {
+        "ProductName": "pepperoni",
+        "ProductType": "pizza",
+        "Available Amount": 450,
+        "Price": 9.8
+      },
+      {
+        "ProductName": "caesar salad",
+        "ProductType": "salad",
+        "Available Amount": 150,
+        "Price": 6.5
+      },
+      {
+        "ProductName": "coca cola",
+        "ProductType": "drink",
+        "Available Amount": 1000,
+        "Price": 1.5
+      }
+    ]
+  },
+  {
+    "StoreName": "Souvlaki King",
+    "Latitude": 37.9750,
+    "Longitude": 23.7310,
+    "FoodCategory": "souvlaki",
+    "Stars": 5,
+    "NoOfVotes": 310,
+    "StoreLogo": "/logos/souvlaki_king.png",
+    "Products": [
+      {
+        "ProductName": "pita gyros pork",
+        "ProductType": "souvlaki",
+        "Available Amount": 800,
+        "Price": 3.8
+      },
+      {
+        "ProductName": "pita gyros chicken",
+        "ProductType": "souvlaki",
+        "Available Amount": 750,
+        "Price": 3.9
+      },
+      {
+        "ProductName": "kalamaki pork",
+        "ProductType": "souvlaki",
+        "Available Amount": 1000,
+        "Price": 2.0
+      },
+      {
+        "ProductName": "fries",
+        "ProductType": "side",
+        "Available Amount": 500,
+        "Price": 2.5
+      },
+      {
+        "ProductName": "beer",
+        "ProductType": "drink",
+        "Available Amount": 300,
+        "Price": 2.2
+      }
+    ]
+  },
+  {
+    "StoreName": "Burger Joint Athens",
+    "Latitude": 37.9880,
+    "Longitude": 23.7350,
+    "FoodCategory": "burger",
+    "Stars": 4,
+    "NoOfVotes": 180,
+    "StoreLogo": "/logos/burger_joint.png",
+    "Products": [
+      {
+        "ProductName": "classic burger",
+        "ProductType": "burger",
+        "Available Amount": 300,
+        "Price": 7.5
+      },
+      {
+        "ProductName": "cheeseburger",
+        "ProductType": "burger",
+        "Available Amount": 350,
+        "Price": 8.0
+      },
+      {
+        "ProductName": "onion rings",
+        "ProductType": "side",
+        "Available Amount": 200,
+        "Price": 4.0
+      },
+      {
+        "ProductName": "milkshake",
+        "ProductType": "drink",
+        "Available Amount": 100,
+        "Price": 4.5
+      }
+    ]
+  },
+  {
+    "StoreName": "Crepa Land",
+    "Latitude": 37.9790,
+    "Longitude": 23.7220,
+    "FoodCategory": "creperie",
+    "Stars": 3,
+    "NoOfVotes": 95,
+    "StoreLogo": "/logos/crepa_land.png",
+    "Products": [
+      {
+        "ProductName": "crepe chocolate",
+        "ProductType": "crepe",
+        "Available Amount": 600,
+        "Price": 3.5
+      },
+      {
+        "ProductName": "crepe bueno",
+        "ProductType": "crepe",
+        "Available Amount": 550,
+        "Price": 4.2
+      },
+      {
+        "ProductName": "crepe ham cheese",
+        "ProductType": "crepe",
+        "Available Amount": 400,
+        "Price": 4.0
+      },
+      {
+        "ProductName": "orange juice",
+        "ProductType": "drink",
+        "Available Amount": 200,
+        "Price": 2.8
+      }
+    ]
+  },
+  {
+    "StoreName": "Coffee Corner",
+    "Latitude": 37.9855,
+    "Longitude": 23.7295,
+    "FoodCategory": "cafe",
+    "Stars": 4,
+    "NoOfVotes": 210,
+    "StoreLogo": "/logos/coffee_corner.png",
+    "Products": [
+      {
+        "ProductName": "espresso",
+        "ProductType": "coffee",
+        "Available Amount": 1000,
+        "Price": 1.8
+      },
+      {
+        "ProductName": "cappuccino",
+        "ProductType": "coffee",
+        "Available Amount": 900,
+        "Price": 2.5
+      },
+      {
+        "ProductName": "freddo espresso",
+        "ProductType": "coffee",
+        "Available Amount": 1200,
+        "Price": 2.2
+      },
+      {
+        "ProductName": "cheese pie",
+        "ProductType": "snack",
+        "Available Amount": 300,
+        "Price": 2.0
+      },
+      {
+        "ProductName": "croissant",
+        "ProductType": "snack",
+        "Available Amount": 250,
+        "Price": 1.9
+      }
+    ]
+  },
+  {
+    "StoreName": "Mama's Pizza",
+    "Latitude": 37.9700,
+    "Longitude": 23.7380,
+    "FoodCategory": "pizzeria",
+    "Stars": 5,
+    "NoOfVotes": 450,
+    "StoreLogo": "/logos/mamas_pizza.png",
+    "Products": [
+      {
+        "ProductName": "special",
+        "ProductType": "pizza",
+        "Available Amount": 400,
+        "Price": 11.5
+      },
+      {
+        "ProductName": "margarita xl",
+        "ProductType": "pizza",
+        "Available Amount": 300,
+        "Price": 14.0
+      },
+      {
+        "ProductName": "garlic bread",
+        "ProductType": "side",
+        "Available Amount": 200,
+        "Price": 3.0
+      },
+      {
+        "ProductName": "pasta carbonara",
+        "ProductType": "pasta",
+        "Available Amount": 150,
+        "Price": 9.0
+      }
+    ]
+  },
+  {
+    "StoreName": "Grill House",
+    "Latitude": 37.9910,
+    "Longitude": 23.7250,
+    "FoodCategory": "souvlaki",
+    "Stars": 4,
+    "NoOfVotes": 160,
+    "StoreLogo": "/logos/grill_house.png",
+    "Products": [
+      {
+        "ProductName": "pita kebab",
+        "ProductType": "souvlaki",
+        "Available Amount": 600,
+        "Price": 4.0
+      },
+      {
+        "ProductName": "chicken portion",
+        "ProductType": "portion",
+        "Available Amount": 100,
+        "Price": 8.5
+      },
+      {
+        "ProductName": "greek salad",
+        "ProductType": "salad",
+        "Available Amount": 120,
+        "Price": 5.5
+      },
+      {
+        "ProductName": "tzatziki",
+        "ProductType": "dip",
+        "Available Amount": 300,
+        "Price": 3.0
+      }
+    ]
+  },
+  {
+    "StoreName": "The Burger Hub",
+    "Latitude": 37.9725,
+    "Longitude": 23.7290,
+    "FoodCategory": "burger",
+    "Stars": 5,
+    "NoOfVotes": 290,
+    "StoreLogo": "/logos/burger_hub.png",
+    "Products": [
+      {
+        "ProductName": "double trouble burger",
+        "ProductType": "burger",
+        "Available Amount": 250,
+        "Price": 10.5
+      },
+      {
+        "ProductName": "veggie burger",
+        "ProductType": "burger",
+        "Available Amount": 150,
+        "Price": 8.5
+      },
+      {
+        "ProductName": "sweet potato fries",
+        "ProductType": "side",
+        "Available Amount": 180,
+        "Price": 4.5
+      },
+      {
+        "ProductName": "lemonade",
+        "ProductType": "drink",
+        "Available Amount": 400,
+        "Price": 2.0
+      }
+    ]
+  },
+  {
+    "StoreName": "Sweet Crepes",
+    "Latitude": 37.9890,
+    "Longitude": 23.7200,
+    "FoodCategory": "creperie",
+    "Stars": 4,
+    "NoOfVotes": 115,
+    "StoreLogo": "/logos/sweet_crepes.png",
+    "Products": [
+      {
+        "ProductName": "crepe lila pause",
+        "ProductType": "crepe",
+        "Available Amount": 500,
+        "Price": 4.0
+      },
+      {
+        "ProductName": "crepe white chocolate strawberry",
+        "ProductType": "crepe",
+        "Available Amount": 450,
+        "Price": 4.8
+      },
+      {
+        "ProductName": "crepe chicken mushroom",
+        "ProductType": "crepe",
+        "Available Amount": 300,
+        "Price": 5.5
+      },
+      {
+        "ProductName": "ice tea",
+        "ProductType": "drink",
+        "Available Amount": 300,
+        "Price": 1.8
+      }
+    ]
+  },
+  {
+    "StoreName": "Daily Coffee",
+    "Latitude": 37.9777,
+    "Longitude": 23.7333,
+    "FoodCategory": "cafe",
+    "Stars": 3,
+    "NoOfVotes": 88,
+    "StoreLogo": "/logos/daily_coffee.png",
+    "Products": [
+      {
+        "ProductName": "freddo cappuccino",
+        "ProductType": "coffee",
+        "Available Amount": 1100,
+        "Price": 2.6
+      },
+      {
+        "ProductName": "greek coffee",
+        "ProductType": "coffee",
+        "Available Amount": 500,
+        "Price": 1.5
+      },
+      {
+        "ProductName": "toast ham cheese",
+        "ProductType": "snack",
+        "Available Amount": 400,
+        "Price": 2.2
+      },
+      {
+        "ProductName": "water bottle",
+        "ProductType": "drink",
+        "Available Amount": 2000,
+        "Price": 0.5
+      }
+    ]
+  },
+  {
+    "StoreName": "Pizza Planet",
+    "Latitude": 37.9842,
+    "Longitude": 23.7390,
+    "FoodCategory": "pizzeria",
+    "Stars": 3,
+    "NoOfVotes": 75,
+    "StoreLogo": "/logos/pizza_planet.png",
+    "Products": [
+      {
+        "ProductName": "hawaiian",
+        "ProductType": "pizza",
+        "Available Amount": 280,
+        "Price": 10.2
+      },
+      {
+        "ProductName": "vegetarian",
+        "ProductType": "pizza",
+        "Available Amount": 250,
+        "Price": 9.5
+      },
+      {
+        "ProductName": "chef salad",
+        "ProductType": "salad",
+        "Available Amount": 100,
+        "Price": 7.0
+      }
+    ]
+  },
+  {
+    "StoreName": "O Gyros tou Kosta",
+    "Latitude": 37.9788,
+    "Longitude": 23.7265,
+    "FoodCategory": "souvlaki",
+    "Stars": 4,
+    "NoOfVotes": 220,
+    "StoreLogo": "/logos/gyros_kosta.png",
+    "Products": [
+      {
+        "ProductName": "pita souvlaki pork",
+        "ProductType": "souvlaki",
+        "Available Amount": 700,
+        "Price": 3.7
+      },
+      {
+        "ProductName": "pita souvlaki chicken",
+        "ProductType": "souvlaki",
+        "Available Amount": 650,
+        "Price": 3.8
+      },
+      {
+        "ProductName": "kalamaki chicken",
+        "ProductType": "souvlaki",
+        "Available Amount": 900,
+        "Price": 2.1
+      },
+      {
+        "ProductName": "fanta",
+        "ProductType": "drink",
+        "Available Amount": 500,
+        "Price": 1.5
+      }
+    ]
+  },
+  {
+    "StoreName": "Big Bite Burger",
+    "Latitude": 37.9810,
+    "Longitude": 23.7362,
+    "FoodCategory": "burger",
+    "Stars": 3,
+    "NoOfVotes": 110,
+    "StoreLogo": "/logos/big_bite.png",
+    "Products": [
+      {
+        "ProductName": "bacon cheeseburger",
+        "ProductType": "burger",
+        "Available Amount": 280,
+        "Price": 8.8
+      },
+      {
+        "ProductName": "chicken burger",
+        "ProductType": "burger",
+        "Available Amount": 220,
+        "Price": 7.0
+      },
+      {
+        "ProductName": "fries with cheddar",
+        "ProductType": "side",
+        "Available Amount": 150,
+        "Price": 4.2
+      }
+    ]
+  },
+  {
+    "StoreName": "Magic Crepe",
+    "Latitude": 37.9743,
+    "Longitude": 23.7248,
+    "FoodCategory": "creperie",
+    "Stars": 5,
+    "NoOfVotes": 190,
+    "StoreLogo": "/logos/magic_crepe.png",
+    "Products": [
+      {
+        "ProductName": "crepe oreo",
+        "ProductType": "crepe",
+        "Available Amount": 580,
+        "Price": 4.5
+      },
+      {
+        "ProductName": "crepe turkey cheese philadelphia",
+        "ProductType": "crepe",
+        "Available Amount": 350,
+        "Price": 5.0
+      },
+      {
+        "ProductName": "waffle chocolate",
+        "ProductType": "waffle",
+        "Available Amount": 100,
+        "Price": 5.5
+      }
+    ]
+  },
+  {
+    "StoreName": "Espresso Bar",
+    "Latitude": 37.9905,
+    "Longitude": 23.7315,
+    "FoodCategory": "cafe",
+    "Stars": 4,
+    "NoOfVotes": 155,
+    "StoreLogo": "/logos/espresso_bar.png",
+    "Products": [
+      {
+        "ProductName": "latte",
+        "ProductType": "coffee",
+        "Available Amount": 800,
+        "Price": 2.8
+      },
+      {
+        "ProductName": "frappe",
+        "ProductType": "coffee",
+        "Available Amount": 700,
+        "Price": 2.0
+      },
+      {
+        "ProductName": "bougatsa cream",
+        "ProductType": "snack",
+        "Available Amount": 200,
+        "Price": 2.5
+      },
+      {
+        "ProductName": "club sandwich",
+        "ProductType": "snack",
+        "Available Amount": 80,
+        "Price": 6.0
+      }
+    ]
+  },
+  {
+    "StoreName": "Italian Touch Pizza",
+    "Latitude": 37.9685,
+    "Longitude": 23.7321,
+    "FoodCategory": "pizzeria",
+    "Stars": 4,
+    "NoOfVotes": 99,
+    "StoreLogo": "/logos/italian_touch.png",
+    "Products": [
+      {
+        "ProductName": "quattro formaggi",
+        "ProductType": "pizza",
+        "Available Amount": 320,
+        "Price": 11.0
+      },
+      {
+        "ProductName": "diavola",
+        "ProductType": "pizza",
+        "Available Amount": 300,
+        "Price": 10.5
+      },
+      {
+        "ProductName": "pasta napolitana",
+        "ProductType": "pasta",
+        "Available Amount": 120,
+        "Price": 7.5
+      }
+    ]
+  },
+  {
+    "StoreName": "Souvlaki Express",
+    "Latitude": 37.9868,
+    "Longitude": 23.7210,
+    "FoodCategory": "souvlaki",
+    "Stars": 3,
+    "NoOfVotes": 65,
+    "StoreLogo": "/logos/souvlaki_express.png",
+    "Products": [
+      {
+        "ProductName": "pita halloumi",
+        "ProductType": "souvlaki",
+        "Available Amount": 400,
+        "Price": 4.1
+      },
+      {
+        "ProductName": "pork portion",
+        "ProductType": "portion",
+        "Available Amount": 90,
+        "Price": 8.0
+      },
+      {
+        "ProductName": "pita bread",
+        "ProductType": "side",
+        "Available Amount": 1000,
+        "Price": 0.5
+      }
+    ]
+  },
+  {
+    "StoreName": "Gourmet Burger",
+    "Latitude": 37.9711,
+    "Longitude": 23.7377,
+    "FoodCategory": "burger",
+    "Stars": 4,
+    "NoOfVotes": 140,
+    "StoreLogo": "/logos/gourmet_burger.png",
+    "Products": [
+      {
+        "ProductName": "truffle burger",
+        "ProductType": "burger",
+        "Available Amount": 180,
+        "Price": 12.5
+      },
+      {
+        "ProductName": "blue cheese burger",
+        "ProductType": "burger",
+        "Available Amount": 160,
+        "Price": 11.8
+      },
+      {
+        "ProductName": "coleslaw",
+        "ProductType": "salad",
+        "Available Amount": 100,
+        "Price": 3.5
+      }
+    ]
+  },
+  {
+    "StoreName": "Creperie Delight",
+    "Latitude": 37.9830,
+    "Longitude": 23.7299,
+    "FoodCategory": "creperie",
+    "Stars": 4,
+    "NoOfVotes": 130,
+    "StoreLogo": "/logos/creperie_delight.png",
+    "Products": [
+      {
+        "ProductName": "crepe banana split",
+        "ProductType": "crepe",
+        "Available Amount": 400,
+        "Price": 5.0
+      },
+      {
+        "ProductName": "crepe caprese",
+        "ProductType": "crepe",
+        "Available Amount": 250,
+        "Price": 5.8
+      },
+      {
+        "ProductName": "pancakes maple syrup",
+        "ProductType": "pancake",
+        "Available Amount": 150,
+        "Price": 6.0
+      }
+    ]
+  },
+  {
+    "StoreName": "Central Cafe",
+    "Latitude": 37.9760,
+    "Longitude": 23.7345,
+    "FoodCategory": "cafe",
+    "Stars": 5,
+    "NoOfVotes": 350,
+    "StoreLogo": "/logos/central_cafe.png",
+    "Products": [
+      {
+        "ProductName": "americano",
+        "ProductType": "coffee",
+        "Available Amount": 950,
+        "Price": 2.0
+      },
+      {
+        "ProductName": "hot chocolate",
+        "ProductType": "drink",
+        "Available Amount": 400,
+        "Price": 3.0
+      },
+      {
+        "ProductName": "muffin",
+        "ProductType": "snack",
+        "Available Amount": 300,
+        "Price": 2.2
+      },
+      {
+        "ProductName": "fresh orange juice",
+        "ProductType": "drink",
+        "Available Amount": 200,
+        "Price": 3.5
+      }
+    ]
+  }
+]
