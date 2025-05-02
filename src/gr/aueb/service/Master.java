@@ -19,25 +19,15 @@ import gr.aueb.manager.ManagerRequestHandler;
 import gr.aueb.manager.dtos.BaseManagerRequest; // Import BaseManagerRequest
 import gr.aueb.model.FilterCriteria;
 
-/**
- * Master Node for the Distributed Food Delivery System.
- * Receives configuration and established WorkerConnections via its constructor or setters.
- * Uses Object Streams for Master <-> Worker communication.
- * Listens for client connections, identifies client type based on the first request object,
- * and starts the appropriate handler (ClientRequestHandler or ManagerRequestHandler).
- * Designed to be run as an object within a larger application/launcher.
- */
-public class Master implements Runnable { // Implement Runnable to be started in a thread
 
-    // Stores active connections to workers (Worker ID -> WorkerConnection)
+public class Master implements Runnable {
+
     private final Map<Integer, WorkerConnection> workers = new ConcurrentHashMap<>();
-    // Store worker IDs in a sorted list for consistent hashing
     private List<Integer> sortedWorkerIds = new ArrayList<>();
 
-    // Configuration details (to be set by the launcher)
     private String reducerHost;
     private int reducerPort;
-    private int masterListenPort; // Port for Master to listen on
+    private int masterListenPort;
 
     /**
      * Manages the TCP connection and communication with a single Worker node
@@ -67,6 +57,7 @@ public class Master implements Runnable { // Implement Runnable to be started in
 
         /**
          * Sends a request object to the worker. Synchronized on outputStreamLock.
+         *
          * @param request The BaseRequest object to send.
          * @throws IOException If an I/O error occurs.
          */
@@ -82,8 +73,9 @@ public class Master implements Runnable { // Implement Runnable to be started in
 
         /**
          * Reads a response object from the worker. Synchronized on inputStreamLock.
+         *
          * @return The received Serializable object.
-         * @throws IOException If an I/O error occurs.
+         * @throws IOException            If an I/O error occurs.
          * @throws ClassNotFoundException If the class of the serialized object cannot be found.
          */
         public Object readResponse() throws IOException, ClassNotFoundException {
@@ -112,9 +104,17 @@ public class Master implements Runnable { // Implement Runnable to be started in
         }
 
         // Getters
-        public int getWorkerId() { return workerId; }
-        public String getIp() { return ip; }
-        public int getPort() { return port; }
+        public int getWorkerId() {
+            return workerId;
+        }
+
+        public String getIp() {
+            return ip;
+        }
+
+        public int getPort() {
+            return port;
+        }
     }
 
     /**
@@ -234,35 +234,56 @@ public class Master implements Runnable { // Implement Runnable to be started in
                     } else {
                         // If no handler was created (unknown type), close the connection
                         System.err.println("Master: Closing unidentified connection from " + clientAddress);
-                        if (objOut != null) try { objOut.close(); } catch (IOException ioex) { /* Ignore */ }
-                        if (objIn != null) try { objIn.close(); } catch (IOException ioex) { /* Ignore */ }
-                        if (clientSocket != null) try { clientSocket.close(); } catch (IOException ioex) { /* Ignore */ }
+                        if (objOut != null) try {
+                            objOut.close();
+                        } catch (IOException ioex) { /* Ignore */ }
+                        if (objIn != null) try {
+                            objIn.close();
+                        } catch (IOException ioex) { /* Ignore */ }
+                        if (clientSocket != null) try {
+                            clientSocket.close();
+                        } catch (IOException ioex) { /* Ignore */ }
                     }
 
                 } catch (SocketTimeoutException e) {
                     System.err.println("Master: Timeout waiting for first request object from " + (clientSocket != null ? clientSocket.getInetAddress().getHostAddress() : "unknown") + ". Closing connection.");
                     // Close resources if timeout occurs before identification
-                    if (objOut != null) try { objOut.close(); } catch (IOException ioex) { /* Ignore */ }
-                    if (objIn != null) try { objIn.close(); } catch (IOException ioex) { /* Ignore */ }
-                    if (clientSocket != null) try { clientSocket.close(); } catch (IOException ioex) { /* Ignore */ }
+                    if (objOut != null) try {
+                        objOut.close();
+                    } catch (IOException ioex) { /* Ignore */ }
+                    if (objIn != null) try {
+                        objIn.close();
+                    } catch (IOException ioex) { /* Ignore */ }
+                    if (clientSocket != null) try {
+                        clientSocket.close();
+                    } catch (IOException ioex) { /* Ignore */ }
                 } catch (EOFException e) {
                     System.out.println("Master: Client " + (clientSocket != null ? clientSocket.getInetAddress().getHostAddress() : "unknown") + " disconnected before sending first request object (EOF).");
-                    // Resources are likely already closed or will be handled by finally
                 } catch (IOException | ClassNotFoundException e) {
                     System.err.println("Master: Error during client connection setup or first object read: " + e.getMessage());
-                    // Close resources on error
-                    if (objOut != null) try { objOut.close(); } catch (IOException ioex) { /* Ignore */ }
-                    if (objIn != null) try { objIn.close(); } catch (IOException ioex) { /* Ignore */ }
-                    if (clientSocket != null) try { clientSocket.close(); } catch (IOException ioex) { /* Ignore */ }
+                    if (objOut != null) try {
+                        objOut.close();
+                    } catch (IOException ioex) { /* Ignore */ }
+                    if (objIn != null) try {
+                        objIn.close();
+                    } catch (IOException ioex) { /* Ignore */ }
+                    if (clientSocket != null) try {
+                        clientSocket.close();
+                    } catch (IOException ioex) { /* Ignore */ }
                 } catch (Exception e) { // Catch any other unexpected errors
                     System.err.println("Master: Unexpected error during client connection handling: " + e.getMessage());
                     e.printStackTrace();
-                    // Close resources on error
-                    if (objOut != null) try { objOut.close(); } catch (IOException ioex) { /* Ignore */ }
-                    if (objIn != null) try { objIn.close(); } catch (IOException ioex) { /* Ignore */ }
-                    if (clientSocket != null) try { clientSocket.close(); } catch (IOException ioex) { /* Ignore */ }
+                    if (objOut != null) try {
+                        objOut.close();
+                    } catch (IOException ioex) { /* Ignore */ }
+                    if (objIn != null) try {
+                        objIn.close();
+                    } catch (IOException ioex) { /* Ignore */ }
+                    if (clientSocket != null) try {
+                        clientSocket.close();
+                    } catch (IOException ioex) { /* Ignore */ }
                 }
-            } // End while loop
+            }
         } catch (SocketException e) {
             // Handle expected exception when serverSocket is closed by shutdown
             if ("Socket closed".equals(e.getMessage()) || "Socket operation on closed socket".contains(e.getMessage())) {
@@ -282,9 +303,6 @@ public class Master implements Runnable { // Implement Runnable to be started in
                     System.err.println("Master: Error closing server socket in finally block: " + e.getMessage());
                 }
             }
-            // Ensure workers are closed when Master stops listening
-            // Note: shutdownWorkers() might be called by the launcher's shutdown hook as well.
-            // Calling it here ensures cleanup if the Master loop exits unexpectedly.
             shutdownWorkers();
         }
     }
@@ -319,15 +337,15 @@ public class Master implements Runnable { // Implement Runnable to be started in
                 connection.sendRequest(request);
                 return true;
             } catch (IOException e) {
-                System.err.println("Master: Error sending request object ("+ request.getClass().getSimpleName() +") to Worker " + targetWorkerId + ": " + e.getMessage());
+                System.err.println("Master: Error sending request object (" + request.getClass().getSimpleName() + ") to Worker " + targetWorkerId + ": " + e.getMessage());
                 // Consider removing or marking the worker connection as faulty here
                 return false;
             } catch (Exception e) { // Catch other potential runtime errors
-                System.err.println("Master: Unexpected error sending request object ("+ request.getClass().getSimpleName() +") to Worker " + targetWorkerId + ": " + e.getMessage());
+                System.err.println("Master: Unexpected error sending request object (" + request.getClass().getSimpleName() + ") to Worker " + targetWorkerId + ": " + e.getMessage());
                 return false;
             }
         } else {
-            System.err.println("Master: Worker connection with ID " + targetWorkerId + " not found for forwarding request object ("+ request.getClass().getSimpleName() +").");
+            System.err.println("Master: Worker connection with ID " + targetWorkerId + " not found for forwarding request object (" + request.getClass().getSimpleName() + ").");
             return false;
         }
     }
@@ -366,7 +384,6 @@ public class Master implements Runnable { // Implement Runnable to be started in
              PrintWriter reducerOut = new PrintWriter(reducerSocket.getOutputStream(), true)) { // Auto-flush
             System.out.println("Master -> Reducer: Notifying START_REDUCE for Job ID: " + jobId + " (Workers: " + numWorkers + ")");
             reducerOut.println("START_REDUCE " + jobId + " " + numWorkers);
-            // Connection closes automatically here (try-with-resources)
         } catch (IOException e) {
             System.err.println("Master (Job " + jobId + "): Failed to communicate with Reducer (START_REDUCE): " + e.getMessage());
             return finalResults; // Cannot proceed without Reducer confirmation
@@ -375,8 +392,6 @@ public class Master implements Runnable { // Implement Runnable to be started in
         // --- 2. Send Map Tasks to Workers (Object Protocol) ---
         System.out.println("Master (Job " + jobId + "): Sending Map tasks (FilterStoresClientRequest) to Workers...");
         // Create the request object to send to each worker
-        // Note: This DTO name 'FilterStoresClientRequest' is confusing here, it's Master->Worker
-        // A better name might be 'MapFilterTaskRequest' or similar. Using existing for now.
         MapFilterTaskRequest mapRequestObject = new MapFilterTaskRequest(jobId, reducerHost, reducerPort, filterCriteria);
 
         // Send request to all workers concurrently using simple Threads

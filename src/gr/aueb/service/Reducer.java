@@ -13,16 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Bare Minimum Reducer Node (University Project Version - No java.util.concurrent).
- * Minimal logging, exception handling, and complexity.
- * Manages job state directly using HashMaps and explicit synchronization.
- * Uses a lock object per job for wait/notify and a global lock for map access.
- */
 public class Reducer {
 
     private final int port;
-    // --- Job State Management (Requires external synchronization) ---
     private final Map<String, List<String>> jobResults = new HashMap<>();
     private final Map<String, Integer> jobExpectedCounts = new HashMap<>();
     private final Map<String, Integer> jobReceivedCounts = new HashMap<>();
@@ -33,7 +26,6 @@ public class Reducer {
     // --- Server and Thread Management ---
     private volatile boolean isRunning = true;
     private ServerSocket serverSocket;
-    // Basic thread tracking (optional for bare minimum, but useful for shutdown)
     private final List<Thread> connectionThreads = Collections.synchronizedList(new ArrayList<>());
 
     public Reducer(int port) {
@@ -52,14 +44,17 @@ public class Reducer {
                 Socket connectionSocket = null;
                 try {
                     connectionSocket = serverSocket.accept();
-                    if (!isRunning) { // Check after accept
-                        if (connectionSocket != null) try { connectionSocket.close(); } catch (IOException e) {}
+                    if (!isRunning) {
+                        if (connectionSocket != null) try {
+                            connectionSocket.close();
+                        } catch (IOException e) {
+                        }
                         break;
                     }
-                    // Start a new thread for each connection without complex tracking
+                    // Start a new thread for each connection
                     Socket finalConnectionSocket = connectionSocket;
                     Thread handlerThread = new Thread(() -> handleConnection(finalConnectionSocket));
-                    handlerThread.start(); // Fire and forget (simplification)
+                    handlerThread.start();
 
                 } catch (SocketException e) {
                     if (!isRunning) break; // Expected when stopping
@@ -68,7 +63,10 @@ public class Reducer {
                     if (!isRunning) break;
                     System.err.println("Reducer: Accept IO error: " + e.getMessage());
                     // Ensure socket is closed on error
-                    if (connectionSocket != null) try { connectionSocket.close(); } catch (IOException ioEx) {}
+                    if (connectionSocket != null) try {
+                        connectionSocket.close();
+                    } catch (IOException ioEx) {
+                    }
                 }
             }
         } catch (IOException e) {
@@ -76,45 +74,26 @@ public class Reducer {
         } finally {
             System.out.println("Reducer: Shutting down.");
             if (serverSocket != null && !serverSocket.isClosed()) {
-                try { serverSocket.close(); } catch (IOException e) {}
+                try {
+                    serverSocket.close();
+                } catch (IOException e) {
+                }
             }
-            // Simple stop for any remaining threads (less robust)
-            // isRunning = false; // Ensure flag is set
-            // interruptHandlerThreads(); // Optional: basic interrupt
         }
     }
 
-    /**
-     * Signals the Reducer to stop.
-     */
     public void stop() {
         System.out.println("Reducer: Stop signal received.");
         isRunning = false;
         if (serverSocket != null && !serverSocket.isClosed()) {
-            try { serverSocket.close(); } catch (IOException e) {}
-        }
-        // Optional: Interrupt handlers if needed
-        // interruptHandlerThreads();
-    }
-
-    /** Optional: Basic interrupt for handler threads */
-    private void interruptHandlerThreads() {
-        synchronized (connectionThreads) { // Still need synchronized list if using this
-            System.out.println("Reducer: Interrupting handler threads...");
-            List<Thread> threadsToStop = new ArrayList<>(connectionThreads);
-            for (Thread t : threadsToStop) {
-                if (t != null && t.isAlive()) t.interrupt();
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
             }
-            connectionThreads.clear();
         }
     }
 
-    /**
-     * Handles a new incoming connection (Master or Worker). Minimal error handling.
-     * @param connectionSocket The socket representing the connection.
-     */
     private void handleConnection(Socket connectionSocket) {
-        // Basic stream handling - assumes correct protocol usage from clients
         try {
             InputStream initialInputStream = connectionSocket.getInputStream();
             PushbackInputStream pushbackInputStream = new PushbackInputStream(initialInputStream, 4);
@@ -142,12 +121,14 @@ public class Reducer {
         } finally {
             // Ensure socket is closed
             if (connectionSocket != null && !connectionSocket.isClosed()) {
-                try { connectionSocket.close(); } catch (IOException e) {}
+                try {
+                    connectionSocket.close();
+                } catch (IOException e) {
+                }
             }
         }
     }
 
-    /** Handles text communication with Master. Minimal error handling. */
     private void handleMasterCommunication(BufferedReader reader, PrintWriter writer) throws IOException {
         String commandLine;
         while ((commandLine = reader.readLine()) != null) {
@@ -171,22 +152,18 @@ public class Reducer {
         }
     }
 
-    /** Handles object communication with Worker. Minimal error handling. */
     private void handleWorkerCommunication(ObjectInputStream objIn) throws IOException, ClassNotFoundException {
         Object messageObject;
         while ((messageObject = objIn.readObject()) != null) {
-            // Minimal logging
-            // System.out.println("Reducer < Worker: Received " + messageObject.getClass().getSimpleName());
             if (messageObject instanceof WorkerResultsMessage) {
                 processWorkerResultsMessage((WorkerResultsMessage) messageObject);
             }
-            // Ignore unknown object types in bare minimum version
         }
     }
 
-    // --- Master Command Handlers (Minimal Error Checking) ---
-
-    /** Handles START_REDUCE command. */
+    /**
+     * Handles START_REDUCE command.
+     */
     private void handleStartReduce(String arguments) {
         String[] args = arguments.trim().split("\\s+");
         if (args.length < 2) return; // Silently ignore invalid command
@@ -199,7 +176,9 @@ public class Reducer {
         }
     }
 
-    /** Handles GET_FINAL_RESULTS command. */
+    /**
+     * Handles GET_FINAL_RESULTS command.
+     */
     private void handleGetFinalResults(String jobId, PrintWriter writer) {
         jobId = jobId.trim();
         if (jobId.isEmpty()) {
@@ -217,9 +196,9 @@ public class Reducer {
         writer.println("END_FINAL_RESULTS"); // Always send end marker
     }
 
-    // --- Worker Message Handler ---
-
-    /** Processes results from a worker. */
+    /**
+     * Processes results from a worker.
+     */
     private void processWorkerResultsMessage(WorkerResultsMessage resultsMsg) {
         String jobId = resultsMsg.getJobId();
         List<String> results = resultsMsg.getResults();
@@ -248,30 +227,25 @@ public class Reducer {
 
             // Increment received count
             int received = 0;
-            synchronized(allJobsLock) {
+            synchronized (allJobsLock) {
                 // Check if job still exists before incrementing
                 if (!jobReceivedCounts.containsKey(jobId)) return; // Job cleaned up
                 received = jobReceivedCounts.compute(jobId, (k, v) -> v + 1); // Assumes key exists
             }
-            // Minimal log
-            // System.out.println("Reducer (Job " + jobId + "): Count " + received + "/" + expected);
 
             // Check if all expected messages are received
             if (received >= expected) {
-                // Minimal log
-                // System.out.println("Reducer (Job " + jobId + "): Ready. Notifying.");
-                synchronized(allJobsLock) {
-                    jobReadyFlags.put(jobId, true); // Mark as ready
+                synchronized (allJobsLock) {
+                    jobReadyFlags.put(jobId, true);
                 }
-                lock.notifyAll(); // Notify waiting thread (getFinalResults)
+                lock.notifyAll();
             }
-        } // End synchronized (lock)
+        }
     }
 
-
-    // --- Core Reducer Logic (Minimal) ---
-
-    /** Initializes state for a new job. */
+    /**
+     * Initializes state for a new job.
+     */
     public boolean startNewJob(String jobId, int expectedWorkers) {
         if (jobId == null || jobId.trim().isEmpty() || expectedWorkers <= 0) return false;
 
@@ -284,18 +258,18 @@ public class Reducer {
             jobResults.put(jobId, Collections.synchronizedList(new ArrayList<>()));
             jobReadyFlags.put(jobId, false);
         }
-        // Minimal log
-        // System.out.println("Reducer: Initialized Job ID: " + jobId + ", Expecting: " + expectedWorkers);
         return true;
     }
 
 
-    /** Waits for job completion and retrieves results. */
+    /**
+     * Waits for job completion and retrieves results.
+     */
     public List<String> getFinalResults(String jobId) {
         Object lock = null;
         Integer expected = null;
 
-        synchronized(allJobsLock) {
+        synchronized (allJobsLock) {
             lock = jobLocks.get(jobId);
             expected = jobExpectedCounts.get(jobId);
         }
@@ -306,50 +280,66 @@ public class Reducer {
         try {
             synchronized (lock) {
                 Boolean isReady = false;
-                synchronized(allJobsLock){ isReady = jobReadyFlags.getOrDefault(jobId, false); }
+                synchronized (allJobsLock) {
+                    isReady = jobReadyFlags.getOrDefault(jobId, false);
+                }
 
                 while (!isReady) {
                     Integer currentReceived = null;
-                    synchronized(allJobsLock) { currentReceived = jobReceivedCounts.get(jobId); }
+                    synchronized (allJobsLock) {
+                        currentReceived = jobReceivedCounts.get(jobId);
+                    }
 
                     // Check completion condition
                     if (currentReceived != null && expected != null && currentReceived >= expected) {
-                        synchronized(allJobsLock) { jobReadyFlags.put(jobId, true); }
-                        isReady = true; break;
+                        synchronized (allJobsLock) {
+                            jobReadyFlags.put(jobId, true);
+                        }
+                        isReady = true;
+                        break;
                     }
                     // Check if job was cleaned up while waiting
-                    synchronized(allJobsLock) { if (!jobLocks.containsKey(jobId)) return null; }
+                    synchronized (allJobsLock) {
+                        if (!jobLocks.containsKey(jobId)) return null;
+                    }
 
-                    // Minimal log
-                    // System.out.println("Reducer (Job " + jobId + "): Waiting...");
                     lock.wait(); // Wait for notification
-                    // Re-check ready flag after waking up
-                    synchronized(allJobsLock){ isReady = jobReadyFlags.getOrDefault(jobId, false); }
-                } // End while loop
-            } // End synchronized (lock)
+                    synchronized (allJobsLock) {
+                        isReady = jobReadyFlags.getOrDefault(jobId, false);
+                    }
+                }
+            }
 
             // Retrieve results (make a copy)
-            synchronized(allJobsLock) {
+            synchronized (allJobsLock) {
                 List<String> synchronizedList = jobResults.get(jobId);
                 if (synchronizedList != null) {
-                    synchronized (synchronizedList) { results = new ArrayList<>(synchronizedList); }
-                } else { results = new ArrayList<>(); } // Return empty if null
+                    synchronized (synchronizedList) {
+                        results = new ArrayList<>(synchronizedList);
+                    }
+                } else {
+                    results = new ArrayList<>();
+                } // Return empty if null
             }
             cleanupJob(jobId); // Clean up after retrieval
             return results;
 
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            cleanupJob(jobId); return null;
+            cleanupJob(jobId);
+            return null;
         } catch (Exception e) { // Catch any other error during wait/retrieval
             System.err.println("Reducer (Job " + jobId + "): Error getting final results: " + e.getMessage());
-            cleanupJob(jobId); return null;
+            cleanupJob(jobId);
+            return null;
         }
     }
 
-    /** Removes state associated with a completed/failed job. */
+    /**
+     * Removes state associated with a completed/failed job.
+     */
     private void cleanupJob(String jobId) {
-        synchronized(allJobsLock) {
+        synchronized (allJobsLock) {
             // Minimal log
             // System.out.println("Reducer: Cleaning up Job ID: " + jobId);
             jobResults.remove(jobId);

@@ -78,13 +78,19 @@ public class Worker implements Runnable {
                     handlerThread.start();
 
                 } catch (SocketException e) {
-                    if (!isRunning) System.out.println("Worker (Port " + port + "): Server socket closed, stopping acceptance.");
-                    else System.err.println("Worker (Port " + port + "): SocketException accepting connection: " + e.getMessage());
+                    if (!isRunning)
+                        System.out.println("Worker (Port " + port + "): Server socket closed, stopping acceptance.");
+                    else
+                        System.err.println("Worker (Port " + port + "): SocketException accepting connection: " + e.getMessage());
                 } catch (IOException e) {
-                    if (isRunning) System.err.println("Worker (Port " + port + "): Error accepting connection: " + e.getMessage());
+                    if (isRunning)
+                        System.err.println("Worker (Port " + port + "): Error accepting connection: " + e.getMessage());
                     // Close the specific socket if accept failed partially
                     if (masterSocket != null && !masterSocket.isClosed()) {
-                        try { masterSocket.close(); } catch (IOException ioEx) {}
+                        try {
+                            masterSocket.close();
+                        } catch (IOException ioEx) {
+                        }
                     }
                 }
             }
@@ -93,13 +99,19 @@ public class Worker implements Runnable {
         } finally {
             System.out.println("Worker (Port " + port + "): Shutting down listener loop."); // LOG: Shutdown listener
             if (serverSocket != null && !serverSocket.isClosed()) {
-                try { serverSocket.close(); } catch (IOException e) { /* ignore */ }
+                try {
+                    serverSocket.close();
+                } catch (IOException e) { /* ignore */ }
             }
             // Minimal wait for handlers
-            synchronized(connectionThreads) {
+            synchronized (connectionThreads) {
                 if (!connectionThreads.isEmpty()) {
                     System.out.println("Worker (Port " + port + "): Waiting briefly for " + connectionThreads.size() + " handler threads..."); // LOG: Waiting for handlers
-                    try { Thread.sleep(500); } catch (InterruptedException e) { Thread.currentThread().interrupt(); }
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             }
             System.out.println("Worker (Port " + port + "): Finished run method."); // LOG: Run method finished
@@ -120,7 +132,7 @@ public class Worker implements Runnable {
         }
         // Interrupt active handlers
         synchronized (connectionThreads) {
-            if(!connectionThreads.isEmpty()){
+            if (!connectionThreads.isEmpty()) {
                 System.out.println("Worker (Port " + port + "): Interrupting " + connectionThreads.size() + " active handler threads..."); // LOG: Interrupting handlers
                 List<Thread> threadsToInterrupt = new ArrayList<>(connectionThreads);
                 for (Thread t : threadsToInterrupt) {
@@ -136,6 +148,7 @@ public class Worker implements Runnable {
 
     /**
      * Handles communication for a single Master connection.
+     *
      * @param masterSocket The socket connected to the Master.
      */
     private void handleMasterConnection(Socket masterSocket) {
@@ -169,7 +182,8 @@ public class Worker implements Runnable {
         } catch (SocketException e) {
             // LOG: Socket exception
             // Avoid logging during normal shutdown
-            if (isRunning) System.out.println("Handler (" + threadName + "): Master connection " + masterAddress + " reset: " + e.getMessage());
+            if (isRunning)
+                System.out.println("Handler (" + threadName + "): Master connection " + masterAddress + " reset: " + e.getMessage());
         } catch (IOException | ClassNotFoundException e) {
             if (isRunning && !Thread.currentThread().isInterrupted())
                 System.err.println("Handler (" + threadName + "): Error communicating with Master " + masterAddress + ": " + e.getMessage());
@@ -181,7 +195,9 @@ public class Worker implements Runnable {
             // Socket is closed implicitly by try-with-resources if initialization succeeded
             // If initialization failed, socket might still be open, close it manually.
             if (masterSocket != null && !masterSocket.isClosed()) {
-                try { masterSocket.close(); } catch (IOException e) { /* Ignore */ }
+                try {
+                    masterSocket.close();
+                } catch (IOException e) { /* Ignore */ }
             }
             // LOG: Stopped processing
             System.out.println("Handler (" + threadName + "): Stopped processing for Master " + masterAddress);
@@ -190,8 +206,9 @@ public class Worker implements Runnable {
 
     /**
      * Processes different types of BaseRequest objects from Master.
-     * @param request The received BaseRequest object.
-     * @param objOut The ObjectOutputStream to send responses back to the Master.
+     *
+     * @param request          The received BaseRequest object.
+     * @param objOut           The ObjectOutputStream to send responses back to the Master.
      * @param outputStreamLock The lock object for synchronizing writes to objOut.
      */
     private void processWorkerRequest(BaseRequest request, ObjectOutputStream objOut, Object outputStreamLock) throws IOException {
@@ -220,6 +237,7 @@ public class Worker implements Runnable {
 
     /**
      * Handles the MapFilterTaskRequest: filters local stores and sends results to Reducer.
+     *
      * @param request The MapFilterTaskRequest object from Master.
      */
     private void handleProcessFilterAndSendToReducer(MapFilterTaskRequest request) {
@@ -260,21 +278,28 @@ public class Worker implements Runnable {
             System.err.println("Handler (" + threadName + ") (FILTER Job " + jobId + "): Error communicating with Reducer (" + this.reducerHost + ":" + this.reducerPort + "): " + e.getMessage());
             // Ensure socket is closed if partially opened
             if (reducerSocket != null && !reducerSocket.isClosed()) {
-                try { reducerSocket.close(); } catch (IOException ioEx) {}
+                try {
+                    reducerSocket.close();
+                } catch (IOException ioEx) {
+                }
             }
         } catch (Exception e) { // Catch unexpected errors during Reducer communication
             System.err.println("Handler (" + threadName + ") (FILTER Job " + jobId + "): Unexpected error sending results to Reducer: " + e.getMessage());
             e.printStackTrace();
             if (reducerSocket != null && !reducerSocket.isClosed()) {
-                try { reducerSocket.close(); } catch (IOException ioEx) {}
+                try {
+                    reducerSocket.close();
+                } catch (IOException ioEx) {
+                }
             }
         }
     }
 
     /**
      * Sends a Serializable response object back to the specific Master connection.
-     * @param response The Serializable object to send (e.g., PurchaseResponse).
-     * @param objOut The ObjectOutputStream for the specific Master connection.
+     *
+     * @param response         The Serializable object to send (e.g., PurchaseResponse).
+     * @param objOut           The ObjectOutputStream for the specific Master connection.
      * @param outputStreamLock The lock for the specific Master connection's output stream.
      */
     private void sendResponse(Serializable response, ObjectOutputStream objOut, Object outputStreamLock) {
@@ -296,31 +321,43 @@ public class Worker implements Runnable {
 
     // --- Core Worker Logic Methods (Reduced Printing) ---
 
-    /** Stores or updates data for a given store. */
+    /**
+     * Stores or updates data for a given store.
+     */
     public boolean storeData(Store store) {
         if (store == null || store.getStoreName() == null || store.getStoreName().trim().isEmpty()) {
-            System.err.println("Worker (Port " + port + "): Invalid Store data."); return false;
+            System.err.println("Worker (Port " + port + "): Invalid Store data.");
+            return false;
         }
         try {
             store.calculateAndSetPriceCategory();
-            synchronized (storesLock) { stores.put(store.getStoreName(), store); }
+            synchronized (storesLock) {
+                stores.put(store.getStoreName(), store);
+            }
             System.out.println("Worker (Port " + port + "): Stored/Updated store: " + store.getStoreName()); // LOG: Store update
             return true;
         } catch (Exception e) {
-            System.err.println("Worker (Port " + port + "): Error processing STORE_DATA for " + store.getStoreName() + ": " + e.getMessage()); return false;
+            System.err.println("Worker (Port " + port + "): Error processing STORE_DATA for " + store.getStoreName() + ": " + e.getMessage());
+            return false;
         }
     }
 
-    /** Updates a product within a store (add, remove, update stock). */
+    /**
+     * Updates a product within a store (add, remove, update stock).
+     */
     public boolean updateStoreProduct(UpdateProductRequest request) {
         if (request == null || request.getStoreName() == null) {
-            System.err.println("Worker (Port " + port + "): Invalid UpdateProductRequest."); return false;
+            System.err.println("Worker (Port " + port + "): Invalid UpdateProductRequest.");
+            return false;
         }
         String storeName = request.getStoreName();
         Store store;
-        synchronized (storesLock) { store = stores.get(storeName); }
+        synchronized (storesLock) {
+            store = stores.get(storeName);
+        }
         if (store == null) {
-            System.err.println("Worker (Port " + port + "): Store not found for update: " + storeName); return false;
+            System.err.println("Worker (Port " + port + "): Store not found for update: " + storeName);
+            return false;
         }
         String productName = request.getProductName();
         boolean success = false;
@@ -329,83 +366,141 @@ public class Worker implements Runnable {
                 case ADD:
                     if (productName == null || request.getProductType() == null) return false;
                     Product np = new Product(productName, request.getProductType(), request.getAmount(), request.getPrice());
-                    store.addProduct(np); success = true; break;
+                    store.addProduct(np);
+                    success = true;
+                    break;
                 case REMOVE:
                     if (productName == null) return false;
                     Product rem = store.removeProduct(productName);
                     success = (rem != null);
-                    if (!success) System.err.println("Worker (Port " + port + "): Product '" + productName + "' not found in '" + storeName + "' for removal.");
+                    if (!success)
+                        System.err.println("Worker (Port " + port + "): Product '" + productName + "' not found in '" + storeName + "' for removal.");
                     break;
                 case UPDATE_STOCK:
                     if (productName == null) return false;
                     Product pu = store.getProduct(productName);
-                    if (pu != null) { pu.setStock(request.getAmount()); success = true; }
-                    else { System.err.println("Worker (Port " + port + "): Product '" + productName + "' not found in '" + storeName + "' for stock update."); }
+                    if (pu != null) {
+                        pu.setStock(request.getAmount());
+                        success = true;
+                    } else {
+                        System.err.println("Worker (Port " + port + "): Product '" + productName + "' not found in '" + storeName + "' for stock update.");
+                    }
                     break;
-                default: System.err.println("Worker (Port " + port + "): Unknown action: " + request.getAction()); return false;
+                default:
+                    System.err.println("Worker (Port " + port + "): Unknown action: " + request.getAction());
+                    return false;
             }
-            if(success) System.out.println("Worker (Port " + port + "): Action " + request.getAction() + " successful for product '" + productName + "' in store '" + storeName + "'."); // LOG: Product update
+            if (success)
+                System.out.println("Worker (Port " + port + "): Action " + request.getAction() + " successful for product '" + productName + "' in store '" + storeName + "'."); // LOG: Product update
             return success;
-        } catch (Exception e) { System.err.println("Worker (Port " + port + "): Error during updateStoreProduct for " + storeName + ": " + e.getMessage()); return false; }
+        } catch (Exception e) {
+            System.err.println("Worker (Port " + port + "): Error during updateStoreProduct for " + storeName + ": " + e.getMessage());
+            return false;
+        }
     }
 
-    /** Filters stores based on criteria. */
+    /**
+     * Filters stores based on criteria.
+     */
     public List<String> processFilterLogic(FilterCriteria criteria) {
         List<String> results = new ArrayList<>();
-        if (criteria == null) { System.err.println("Worker (Port " + port + "): Null FilterCriteria."); return results; }
+        if (criteria == null) {
+            System.err.println("Worker (Port " + port + "): Null FilterCriteria.");
+            return results;
+        }
         List<Store> storesToCheck;
-        synchronized (storesLock) { storesToCheck = new ArrayList<>(stores.values()); }
-        // LOG: Starting filter logic execution
-        // System.out.println("Worker (Port " + port + "): Executing filter logic for " + storesToCheck.size() + " stores.");
+        synchronized (storesLock) {
+            storesToCheck = new ArrayList<>(stores.values());
+        }
         try {
             for (Store store : storesToCheck) {
                 double distance = calculateDistance(criteria.getClientLatitude(), criteria.getClientLongitude(), store.getLatitude(), store.getLongitude());
                 if (distance > criteria.getMaxDistance()) continue;
                 List<String> targetFoodCategories = criteria.getFoodCategories();
-                if (targetFoodCategories != null && !targetFoodCategories.isEmpty() && !targetFoodCategories.contains(store.getFoodCategory())) continue;
+                if (targetFoodCategories != null && !targetFoodCategories.isEmpty() && !targetFoodCategories.contains(store.getFoodCategory()))
+                    continue;
                 if (store.getStars() < criteria.getMinStars()) continue;
                 List<String> targetPriceCategories = criteria.getPriceCategories();
-                if (targetPriceCategories != null && !targetPriceCategories.isEmpty() && !targetPriceCategories.contains(store.getPriceCategory())) continue;
+                if (targetPriceCategories != null && !targetPriceCategories.isEmpty() && !targetPriceCategories.contains(store.getPriceCategory()))
+                    continue;
                 results.add(store.toString()); // Assuming Store.toString() is suitable
             }
-        } catch (Exception e) { System.err.println("Worker (Port " + port + "): Error during filtering: " + e.getMessage()); return new ArrayList<>(); }
-        // LOG: Finished filter logic execution
-        // System.out.println("Worker (Port " + port + "): Finished filter logic. Matches found: " + results.size());
+        } catch (Exception e) {
+            System.err.println("Worker (Port " + port + "): Error during filtering: " + e.getMessage());
+            return new ArrayList<>();
+        }
         return results;
     }
 
-    /** Processes a purchase request. */
+    /**
+     * Processes a purchase request.
+     */
     public PurchaseResponse processPurchase(PurchaseRequest request) {
         if (request == null || request.getStoreName() == null || request.getProductName() == null) {
-            return new PurchaseResponse(PurchaseResponse.Status.FAIL_WORKER_ERROR, "Invalid purchase request."); }
-        String storeName = request.getStoreName(); String productName = request.getProductName(); int quantity = request.getQuantity();
-        if (quantity <= 0) { return new PurchaseResponse(PurchaseResponse.Status.FAIL_INVALID_QTY); }
-        Store store; synchronized (storesLock) { store = stores.get(storeName); }
-        if (store == null) { return new PurchaseResponse(PurchaseResponse.Status.FAIL_STORE_NOT_FOUND); }
+            return new PurchaseResponse(PurchaseResponse.Status.FAIL_WORKER_ERROR, "Invalid purchase request.");
+        }
+        String storeName = request.getStoreName();
+        String productName = request.getProductName();
+        int quantity = request.getQuantity();
+        if (quantity <= 0) {
+            return new PurchaseResponse(PurchaseResponse.Status.FAIL_INVALID_QTY);
+        }
+        Store store;
+        synchronized (storesLock) {
+            store = stores.get(storeName);
+        }
+        if (store == null) {
+            return new PurchaseResponse(PurchaseResponse.Status.FAIL_STORE_NOT_FOUND);
+        }
         Product product = store.getProduct(productName);
-        if (product == null) { return new PurchaseResponse(PurchaseResponse.Status.FAIL_PRODUCT_NOT_FOUND); }
+        if (product == null) {
+            return new PurchaseResponse(PurchaseResponse.Status.FAIL_PRODUCT_NOT_FOUND);
+        }
         boolean success = product.decreaseStock(quantity); // Must be synchronized
         // LOG: Purchase attempt result
         System.out.println("Worker (Port " + port + "): Purchase attempt for " + quantity + "x '" + productName + "' from '" + storeName + "'. Success: " + success);
         return success ? new PurchaseResponse(PurchaseResponse.Status.OK) : new PurchaseResponse(PurchaseResponse.Status.FAIL_STOCK);
     }
 
-    /** Calculates distance between two lat/lon points. */
+    /**
+     * Calculates distance between two lat/lon points.
+     */
     private static double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        final int R = 6371; double latDistance = Math.toRadians(lat2 - lat1); double lonDistance = Math.toRadians(lon2 - lon1);
+        final int R = 6371;
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2) + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); return R * c;
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
     }
 
     // Main method remains the same
     public static void main(String[] args) {
-        if (args.length < 3) { System.err.println("Usage: java gr.aueb.service.Worker <port> <reducerHost> <reducerPort>"); System.exit(1); }
-        int port; String reducerHost; int reducerPort;
-        try { port = Integer.parseInt(args[0]); reducerHost = args[1]; reducerPort = Integer.parseInt(args[2]); }
-        catch (NumberFormatException e) { System.err.println("Invalid Port format."); System.exit(1); return; }
-        catch (ArrayIndexOutOfBoundsException e) { System.err.println("Missing arguments."); System.exit(1); return; }
+        if (args.length < 3) {
+            System.err.println("Usage: java gr.aueb.service.Worker <port> <reducerHost> <reducerPort>");
+            System.exit(1);
+        }
+        int port;
+        String reducerHost;
+        int reducerPort;
+        try {
+            port = Integer.parseInt(args[0]);
+            reducerHost = args[1];
+            reducerPort = Integer.parseInt(args[2]);
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid Port format.");
+            System.exit(1);
+            return;
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Missing arguments.");
+            System.exit(1);
+            return;
+        }
         Worker worker = new Worker(port, reducerHost, reducerPort);
-        Runtime.getRuntime().addShutdownHook(new Thread(() -> { System.out.println("Worker shutdown hook for port " + port); worker.stop(); }));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Worker shutdown hook for port " + port);
+            worker.stop();
+        }));
         worker.run();
     }
 }
