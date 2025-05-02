@@ -1,0 +1,35 @@
+{
+  "storeName": "Pizza Roma",
+  "latitude": 37.9815,
+  "longitude": 23.728,
+  "foodCategory": "pizzeria",
+  "stars": 4,
+  "noOfVotes": 125,
+  "storeLogo": "/logos/pizza_roma.png",
+  "products": {
+    "margarita": {
+      "productName": "margarita",
+      "productType": "pizza",
+      "availableAmount": 500,
+      "price": 8.5
+    },
+    "pepperoni": {
+      "productName": "pepperoni",
+      "productType": "pizza",
+      "availableAmount": 450,
+      "price": 9.8
+    },
+    "caesar salad": {
+      "productName": "caesar salad",
+      "productType": "salad",
+      "availableAmount": 150,
+      "price": 6.5
+    },
+    "coca cola": {
+      "productName": "coca cola",
+      "productType": "drink",
+      "availableAmount": 1000,
+      "price": 1.5
+    }
+  }
+}

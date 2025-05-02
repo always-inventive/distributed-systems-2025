@@ -1,11 +1,11 @@
-package model;
+package gr.aueb.model;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Represents a Store managed by this service.Worker.
+ * Represents a Store managed by this Worker.
  */
 public class Store implements Serializable {
     private static final long serialVersionUID = 3L;

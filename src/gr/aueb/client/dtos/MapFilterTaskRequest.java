@@ -1,24 +1,26 @@
-package gr.aueb.dtos;
-
+package gr.aueb.client.dtos;
+import gr.aueb.dtos.BaseRequest;
 import gr.aueb.model.FilterCriteria;
 
 /**
- * Request for a worker to process filters for a MapReduce job.
+ * Request from Master to Worker to perform the "Map" phase of filtering stores.
+ * Contains the job details, Reducer info, and filter criteria.
  */
-public class FilterStoresClientRequest extends BaseRequest {
-    private static final long serialVersionUID = 103L;
+public class MapFilterTaskRequest extends BaseRequest {
+    private static final long serialVersionUID = 103L; // Keep old ID or assign new one
     private final String jobId;
     private final String reducerHost;
     private final int reducerPort;
     private final FilterCriteria criteria; // Send the criteria object
 
-    public FilterStoresClientRequest(String jobId, String reducerHost, int reducerPort, FilterCriteria criteria) {
+    public MapFilterTaskRequest(String jobId, String reducerHost, int reducerPort, FilterCriteria criteria) {
         this.jobId = jobId;
         this.reducerHost = reducerHost;
         this.reducerPort = reducerPort;
         this.criteria = criteria;
     }
 
+    // Getters
     public String getJobId() {
         return jobId;
     }

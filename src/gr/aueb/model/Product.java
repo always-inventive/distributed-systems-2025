@@ -1,4 +1,4 @@
-package model;
+package gr.aueb.model;
 
 import java.io.Serializable;
 

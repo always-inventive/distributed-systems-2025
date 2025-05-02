@@ -1,0 +1,29 @@
+{
+  "storeName": "Souvlaki Express",
+  "latitude": 37.9868,
+  "longitude": 23.721,
+  "foodCategory": "souvlaki",
+  "stars": 3,
+  "noOfVotes": 65,
+  "storeLogo": "/logos/souvlaki_express.png",
+  "products": {
+    "pita halloumi": {
+      "productName": "pita halloumi",
+      "productType": "souvlaki",
+      "availableAmount": 400,
+      "price": 4.1
+    },
+    "pork portion": {
+      "productName": "pork portion",
+      "productType": "portion",
+      "availableAmount": 90,
+      "price": 8.0
+    },
+    "pita bread": {
+      "productName": "pita bread",
+      "productType": "side",
+      "availableAmount": 1000,
+      "price": 0.5
+    }
+  }
+}

@@ -1,10 +1,10 @@
-import service.Master;
-import service.Reducer;
-import service.Worker;
+package gr.aueb;
+
+import gr.aueb.service.Master;
+import gr.aueb.service.Reducer;
+import gr.aueb.service.Worker;
 
 import java.io.*;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -22,7 +22,7 @@ import java.util.Properties;
  */
 public class SystemLauncher {
 
-    private static final String DEFAULT_CONFIG_FILE = "resources/system.config";
+    private static final String DEFAULT_CONFIG_FILE = "resources\\system.config";
     private static final List<Closeable> closeableResources = Collections.synchronizedList(new ArrayList<>());
     private static final List<Thread> componentThreads = Collections.synchronizedList(new ArrayList<>());
     private static Master masterInstance;
@@ -70,7 +70,7 @@ public class SystemLauncher {
                 System.out.println("\n--- Starting Worker on port " + workerPort + " (Reducer: " + reducerHost + ":" + reducerPort + ") ---");
                 Worker worker = new Worker(workerPort, reducerHost, reducerPort);
                 workerInstances.add(worker);
-                Thread workerThread = new Thread(worker::start, "WorkerThread-" + workerPort);
+                Thread workerThread = new Thread(worker, "WorkerThread-" + workerPort);
                 componentThreads.add(workerThread);
                 workerThread.start();
                 Thread.sleep(200); // Allow time for worker to start listening
@@ -181,8 +181,7 @@ public class SystemLauncher {
         // 1. Signal Master to stop accepting clients and close worker connections
         if (masterInstance != null) {
             System.out.println("System Launcher: Shutting down Master...");
-            masterInstance.shutdownWorkers(); // Close worker connections first
-            // Master thread should check for interruption in its accept loop
+            masterInstance.shutdownWorkers();
         }
 
         // 2. Signal Reducer thread to stop listening

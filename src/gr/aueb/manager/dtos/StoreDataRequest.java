@@ -1,5 +1,6 @@
-package gr.aueb.dtos;
+package gr.aueb.manager.dtos;
 
+import gr.aueb.dtos.BaseRequest;
 import gr.aueb.model.Store;
 
 /**

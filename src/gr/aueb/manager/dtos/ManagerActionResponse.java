@@ -1,4 +1,4 @@
-package gr.aueb.dtos;
+package gr.aueb.manager.dtos;
 
 import java.io.Serializable;
 
